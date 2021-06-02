@@ -16,9 +16,9 @@ app.get("/dbTest", async function(req, res){
     res.send(rows);
 });
 
-//test initial hello world
+//go to login screen
 app.get('/',(req, res) => {
-    res.send('Hello world 2')
+    res.render("login");
 });
 
 //server startup msg

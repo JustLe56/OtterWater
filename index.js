@@ -34,10 +34,8 @@ app.get("/dbTest", async function(req, res){
 //go to login screen if not logged in, else take to home
 app.get('/', async (req, res) => {
 	if (req.session.authenticated){
-        console.log("username: "+req.session.username);
-		res.render("home");
+		res.render("home",{"username":req.session.username});
 	} else {
-        console.log("username: "+req.session.username);
 		res.render("login");
 	}
 });
@@ -46,8 +44,6 @@ app.get('/', async (req, res) => {
 app.post("/login", async (req,res) =>{
     let username = req.body.username;
 	let password = req.body.password;
-	console.log("user: "+username);
-	console.log("pass: "+password);
 
     let hashedpwd="";
 

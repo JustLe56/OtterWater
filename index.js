@@ -38,7 +38,7 @@ app.get('/', async (req, res) => {
 		res.render("home",{"username":req.session.username});
 	} else {
 		res.render("login",{"alertType":req.session.alertType,"alert":req.session.alert}); //login can dynamically display various alert messages using bootstrap alerts
-	}
+    }
 });
 
 //when login button is clicked
@@ -64,7 +64,7 @@ app.post("/login", async (req,res) =>{
         console.log("authed");
 		res.redirect("/");
 	} else {
-		res.render("login",{"msg":"Incorrect username or password."});
+        res.render("login",{"alertType":"alert-danger","alert":"Incorrect username or password."});
 	}
 });
 
@@ -76,8 +76,9 @@ app.get("/logout", (req,res) => {
 
 app.get("/signup", async (req,res)=>{
     if (req.session.authenticated){
-		res.render("home",{"username":req.session.username});
+		res.redirect("/");
 	} else {
+        clearAlert(req);
 		res.render("signup");
 	}
 });
@@ -85,6 +86,7 @@ app.get("/signup", async (req,res)=>{
 app.post("/signup", async (req, res)=> {
     let username = req.body.username;
     let password = req.body.password;
+    let email = req.body.useremail;
     let hashedpass = "";
 
     hashedpass = await bcrypt.hash(password,10);
@@ -95,15 +97,22 @@ app.post("/signup", async (req, res)=> {
     if(rows.length == 0){
         //found no matching users
         //can insert new user to database
-
-        let params2 = [username,hashedpass];
-		let sql2 = `insert into otter_users (username, password) values (?,?)`;
-		let rows2 = await executeSQL(sql2, params2);
-        req.session.alertType = "alert-success";
-        req.session.alert = "Account successfully created! Please login.";
-        res.redirect("/");
+        
+        //must pass credential constraints
+        if (username.length >= 50){
+            req.session.alertType = "alert-danger";
+            req.session.alert = "Username too long";
+            res.redirect("signup");
+        } else{
+            let params2 = [username,hashedpass,email];
+            let sql2 = `insert into otter_users (username, password,email) values (?,?,?)`;
+            let rows2 = await executeSQL(sql2, params2);
+            req.session.alertType = "alert-success";
+            req.session.alert = "Account successfully created! Please login.";
+            res.redirect("/");
+        }
     } else{
-        res.render("signup",{"msg":"Username already taken"});
+            res.render("signup",{"alertType":"alert-danger","alert":"Username already taken"});
     }
 });
 
@@ -113,6 +122,12 @@ app.listen(3000, "127.0.0.1", () => {
 });
 
 //functions
+
+function clearAlert(req){
+    console.log("cleared");
+    req.session.alertType = undefined;
+    req.session.alert = undefined;
+}
 
 //middleware for auth check
 function isAuthed(req, res, next){

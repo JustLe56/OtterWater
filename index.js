@@ -33,10 +33,11 @@ app.get("/dbTest", async function(req, res){
 
 //go to login screen if not logged in, else take to home
 app.get('/', async (req, res) => {
+
 	if (req.session.authenticated){
 		res.render("home",{"username":req.session.username});
 	} else {
-		res.render("login");
+		res.render("login",{"alertType":req.session.alertType,"alert":req.session.alert}); //login can dynamically display various alert messages using bootstrap alerts
 	}
 });
 
@@ -71,6 +72,39 @@ app.get("/logout", (req,res) => {
 	req.session.destroy();
     console.log("logged out")
 	res.redirect("/");
+});
+
+app.get("/signup", async (req,res)=>{
+    if (req.session.authenticated){
+		res.render("home",{"username":req.session.username});
+	} else {
+		res.render("signup");
+	}
+});
+
+app.post("/signup", async (req, res)=> {
+    let username = req.body.username;
+    let password = req.body.password;
+    let hashedpass = "";
+
+    hashedpass = await bcrypt.hash(password,10);
+
+    let sql = "SELECT * FROM otter_users WHERE username = ?";
+    let params = [username];
+    let rows = await executeSQL(sql, params);
+    if(rows.length == 0){
+        //found no matching users
+        //can insert new user to database
+
+        let params2 = [username,hashedpass];
+		let sql2 = `insert into otter_users (username, password) values (?,?)`;
+		let rows2 = await executeSQL(sql2, params2);
+        req.session.alertType = "alert-success";
+        req.session.alert = "Account successfully created! Please login.";
+        res.redirect("/");
+    } else{
+        res.render("signup",{"msg":"Username already taken"});
+    }
 });
 
 //server startup msg

@@ -1,7 +1,9 @@
 const express = require("express");
 const mysql = require('mysql');
+const fetch = require('node-fetch');
 const session = require("express-session");
 const bcrypt = require("bcrypt");
+const ejs = require('ejs');
 const app = express();
 
 require('dotenv').config({ path:  '.env'})
@@ -35,10 +37,16 @@ app.get("/dbTest", async function(req, res){
 app.get('/', async (req, res) => {
 
 	if (req.session.authenticated){
-		res.render("home",{"username":req.session.username});
+        let apiData = await getData();
+		res.redirect("home");
 	} else {
 		res.render("login",{"alertType":req.session.alertType,"alert":req.session.alert}); //login can dynamically display various alert messages using bootstrap alerts
     }
+});
+
+app.get('/home', isAuthed, async (req, res) => {
+    let apiData = await getData();
+	res.render("home",{"username":req.session.username,"mapbox_token":process.env.MAPBOX_API_KEY,"apiData":apiData});
 });
 
 //when login button is clicked
@@ -115,6 +123,25 @@ app.post("/signup", async (req, res)=> {
             res.render("signup",{"alertType":"alert-danger","alert":"Username already taken"});
     }
 });
+
+//api
+app.get("/api/getAllPOI", async (req,res)=>{
+    let sql = "SELECT * FROM otter_poi";
+	let rows = await executeSQL(sql);
+    res.send(rows);
+});
+
+async function getData(){
+    let url = `http://localhost:3000/api/getAllPOI`;
+    let response = await fetch(url);
+    //console.log(response)
+    if(response.ok){
+        let apiData = await response.json();
+        //console.log("data: "+apiData[0].name);
+        return apiData;
+    }
+    return "error";
+}
 
 //server startup msg
 app.listen(3000, "127.0.0.1", () => {

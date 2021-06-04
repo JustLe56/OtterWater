@@ -14,9 +14,18 @@
 </head>
 <body>
 	<div id = "formContainer" class = "w-25 position-absolute top-50 start-50 translate-middle card">
+		<% if (typeof alert != "undefined") { %>
+			<div class="alert <%= alertType %>" role="alert">
+				<%= alert %>
+			</div>
+		<% } %>
 		<div class = "card-body">
 			<h5 class="card-title">Sign Up</h5>
 			<form action="/signup" method ="POST">
+				<div class="mb-3">
+					<label for="exampleInputEmail1" class="form-label">Email address</label>
+					<input name="useremail" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+				  </div>
 				<div class="mb-3">
 					<label for="usernameField" class="form-label">Username</label>
 					<input type="text" class="form-control" name="username" id="usernameField" aria-describedby="usernamehelp">

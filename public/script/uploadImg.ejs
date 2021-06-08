@@ -1,0 +1,20 @@
+<script>
+    const file = document.getElementById("fileSubmit");
+    const img = document.getElementById("displayImg");
+    const url = document.getElementById("url");
+    file.addEventListener("change", ev => {
+        const formdata = new FormData();
+        formdata.append("image",ev.target.files[0])
+        fetch("https://api.imgur.com/3/image", {
+            method: "post",
+            headers: {
+                Authorization: "Client-ID <%= client_id %>" //use env to hide
+            }
+        , body: formdata
+        }).then(data => data.json()).then(data => {
+            console.log(data)
+            img.src=data.data.link
+            url.innerText=data.data.link
+        })
+    })
+</script>

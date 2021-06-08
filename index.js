@@ -49,6 +49,12 @@ app.get('/home', isAuthed, async (req, res) => {
 	res.render("home",{"username":req.session.username,"mapbox_token":process.env.MAPBOX_API_KEY,"apiData":apiData});
 });
 
+app.get('/submit',isAuthed,async(req,res) =>{
+    res.render("submit",{"imgur_id":process.env.IMGUR_CLIENT_ID});
+});
+
+
+
 //when login button is clicked
 app.post("/login", async (req,res) =>{
     let username = req.body.username;
@@ -124,7 +130,7 @@ app.post("/signup", async (req, res)=> {
     }
 });
 
-//api
+//api routes
 app.get("/api/getAllPOI", async (req,res)=>{
     let sql = "SELECT * FROM otter_poi";
 	let rows = await executeSQL(sql);
@@ -144,7 +150,7 @@ async function getData(){
 }
 
 //server startup msg
-app.listen(3000, "127.0.0.1", () => {
+app.listen(3000, () => {
     console.log('server started');
 });
 

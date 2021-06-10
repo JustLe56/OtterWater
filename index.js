@@ -46,11 +46,11 @@ app.get('/', async (req, res) => {
 
 app.get('/home', isAuthed, async (req, res) => {
     let apiData = await getData();
-	res.render("home",{"username":req.session.username,"mapbox_token":process.env.MAPBOX_API_KEY,"apiData":apiData});
+	res.render("home",{"username":req.session.username,"mapbox_token":process.env.MAPBOX_API_KEY,"apiData":apiData,"title":"Home"});
 });
 
 app.get('/submit',isAuthed,async(req,res) =>{
-    res.render("submit",{"imgur_id":process.env.IMGUR_CLIENT_ID});
+    res.render("submit",{"imgur_id":process.env.IMGUR_CLIENT_ID,"title":"Submit"});
 });
 
 

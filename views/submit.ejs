@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/header.ejs') %>
+<body>
+	<%- include('partials/navbar.ejs') %>
+	<h2>upload image</h2>
+
+    <input type="file" id="fileSubmit">
+    <img src="https://i.imgur.com/BQJctEc.jpg" id="displayImg" width=250px height=250px>
+    <p id = "url"></p>
+	<%- include ("../public/script/uploadImg", {client_id:imgur_id}); %>
+	<%- include('partials/footer.ejs') %>
+</body>
+</html>
+
+

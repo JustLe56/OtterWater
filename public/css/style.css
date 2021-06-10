@@ -1,4 +1,21 @@
+/* 
+CSUMB colors 
+Blue: #112E51
+Sand: #F4F2EF
+
+Ref: https://csumb.edu/communications/color-palette/
+*/
+
+/*
+CSS Selectors
+# for id
+. for class
+*/
 #mapid {   
     height: 360px; 
 	width: 640px;
+}
+
+.navbar{
+    background-color: #205493;
 }

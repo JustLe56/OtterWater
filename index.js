@@ -53,8 +53,21 @@ app.get('/submit',isAuthed,async(req,res) =>{
     res.render("submit",{"imgur_id":process.env.IMGUR_CLIENT_ID,"title":"Submit"});
 });
 
-
-
+app.post('/submit',isAuthed,async(req,res) =>{
+    let name = req.body.poiName;
+    let lat = req.body.poiLat;
+    let lon = req.body.poiLon;
+    let desc = req.body.poiDesc;
+    let userID = req.session.userID;
+    let approved = 0;
+    let img = req.body.poiImgURL;
+    
+    let params = [name,lat,lon,desc,userID,approved,img];
+    console.log(params);
+    let sql = 'insert into otter_poi (poi_name, lat, lon, poi_desc, user_id, approved, img_link) values (?, ?, ?, ?, ?, ?, ?)';
+    let rows = await executeSQL(sql,params);
+    res.render("submit",{"imgur_id":process.env.IMGUR_CLIENT_ID,"title":"Submit","alertType":"alert-success","alert":"POI Submitted"});
+});
 //when login button is clicked
 app.post("/login", async (req,res) =>{
     let username = req.body.username;
@@ -75,6 +88,7 @@ app.post("/login", async (req,res) =>{
     if(match){
 		req.session.authenticated = true;
         req.session.username = username;
+        req.session.userID = rows[0].user_id;
         console.log("authed");
 		res.redirect("/");
 	} else {

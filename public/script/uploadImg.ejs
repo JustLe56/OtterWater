@@ -1,8 +1,8 @@
 <script>
-    const file = document.getElementById("fileSubmit");
-    const img = document.getElementById("displayImg");
-    const url = document.getElementById("url");
-    //dont use localhost imgur blocks it for some reason
+    const file = document.getElementById("poiImg");
+    const url = document.getElementById("hiddenURL");
+    //dont use localhost images may display but upload does not; occasionally it will completely work
+    //127.0.0.1 doesn't display images but the image upload goes through
     file.addEventListener("change", ev => {
         const formdata = new FormData();
         formdata.append("image",ev.target.files[0])
@@ -14,8 +14,7 @@
         , body: formdata
         }).then(data => data.json()).then(data => {
             console.log(data)
-            img.src=data.data.link
-            url.innerText=data.data.link
+            url.value=data.data.link
         })
     })
 </script>

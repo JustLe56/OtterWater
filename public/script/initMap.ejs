@@ -12,14 +12,14 @@ crossorigin=""></script>
                     zoomOffset: -1,
                     accessToken: 'pk.eyJ1IjoianVzdGxlNTYiLCJhIjoiY2twZXE1a3NoMDFldTJvcXB5MTYxdHliYiJ9.pT4JmkwAniTtAAzlO3Atqw'
 		        }).addTo(mymap);
-		var marker = L.marker([36.653827, -121.798320]).addTo(mymap);
+		// var marker = L.marker([36.653827, -121.798320]).addTo(mymap);
     
-    let temp = '<%- JSON.stringify(mapData)%>';
-    marker.bindPopup(temp);
+    // let temp = '<%- JSON.stringify(mapData)%>';
+    // marker.bindPopup(temp);
 
     //loop through data adding markers for each POI entry
     <% for (var i =0; i < mapData.length;i++) { %>
-      L.marker(['<%- JSON.stringify(mapData[i].lat)%>', '<%- JSON.stringify(mapData[i].lon)%>']).addTo(mymap).bindPopup('<b><%- JSON.stringify(mapData[i].name)%></b><br><%- JSON.stringify(mapData[i].desc)%>');
+      L.marker(['<%- JSON.stringify(mapData[i].lat)%>', '<%- JSON.stringify(mapData[i].lon)%>']).addTo(mymap).bindPopup('<b><%- JSON.stringify(mapData[i].poi_name)%></b><br><%- JSON.stringify(mapData[i].poi_desc)%>');
     <% } %>
 
     

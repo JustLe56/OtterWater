@@ -19,7 +19,8 @@ crossorigin=""></script>
 
     //loop through data adding markers for each POI entry
     <% for (var i =0; i < mapData.length;i++) { %>
-      L.marker(['<%- JSON.stringify(mapData[i].lat)%>', '<%- JSON.stringify(mapData[i].lon)%>']).addTo(mymap).bindPopup('<b><%- JSON.stringify(mapData[i].poi_name)%></b><br><%- JSON.stringify(mapData[i].poi_desc)%>');
+      //to get rid of outer quotations from json stringify we used replace, note that this will remove all quotes including ones inside the description text
+      L.marker(['<%- JSON.stringify(mapData[i].lat)%>', '<%- JSON.stringify(mapData[i].lon)%>']).addTo(mymap).bindPopup('<b><%- JSON.stringify(mapData[i].poi_name).replace(/\"/g, "")%></b><br><%- JSON.stringify(mapData[i].poi_desc).replace(/\"/g, "")%> <img src=<%- JSON.stringify(mapData[i].img_link).replace(/\"/g, "")%> width="100" height="100">');
     <% } %>
 
     

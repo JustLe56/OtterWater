@@ -3,14 +3,14 @@ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0v
 crossorigin=""></script>
 <script>
   accessToken = "pk.eyJ1IjoianVzdGxlNTYiLCJhIjoiY2twZXE1a3NoMDFldTJvcXB5MTYxdHliYiJ9.pT4JmkwAniTtAAzlO3Atqw"
-			var mymap = L.map('mapid').setView([36.653827, -121.798320], 15);
+			var mymap = L.map('mapid',{ "tap": false }).setView([36.653827, -121.798320], 15);
 				L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${accessToken}`, {
                     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
                     maxZoom: 18,
                     id: 'mapbox/streets-v11',
                     tileSize: 512,
                     zoomOffset: -1,
-                    accessToken: 'pk.eyJ1IjoianVzdGxlNTYiLCJhIjoiY2twZXE1a3NoMDFldTJvcXB5MTYxdHliYiJ9.pT4JmkwAniTtAAzlO3Atqw'
+                    accessToken: 'pk.eyJ1IjoianVzdGxlNTYiLCJhIjoiY2twZXE1a3NoMDFldTJvcXB5MTYxdHliYiJ9.pT4JmkwAniTtAAzlO3Atqw',
 		        }).addTo(mymap);
 		// var marker = L.marker([36.653827, -121.798320]).addTo(mymap);
     

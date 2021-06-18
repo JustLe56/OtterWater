@@ -1,0 +1,23 @@
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+crossorigin=""></script>
+<script>
+            accessToken = "pk.eyJ1IjoianVzdGxlNTYiLCJhIjoiY2twZXE1a3NoMDFldTJvcXB5MTYxdHliYiJ9.pT4JmkwAniTtAAzlO3Atqw"
+			var map = L.map('hiddenMap',{ "tap": false });
+            //currently only works with local host
+            //need to be HTTPS to do geolocation on other devices
+            map.locate({setView: true, maxZoom: 16});
+            function onLocationFound(e) {
+                var radius = e.accuracy;
+                console.log(e.latlng.lat+","+e.latlng.lng);
+                $('#poiLatID').val(e.latlng.lat);
+                $('#poiLonID').val(e.latlng.lng);
+            }
+
+            function onLocationError(e) {
+                alert(e.message);
+            }
+
+            map.on('locationerror', onLocationError);
+            map.on('locationfound', onLocationFound);
+</script>

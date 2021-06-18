@@ -19,11 +19,11 @@
 			</div>
 			<div class="mb-3">
 				<label for="poiLat" class="form-label">Latitude </label>
-				<input type="text" class="form-control" name="poiLat">
+				<input type="text" class="form-control" name="poiLat" id="poiLatID">
 			</div>
 			<div class="mb-3">
 				<label for="poiLon" class="form-label">Longitude </label>
-				<input type="text" class="form-control" name="poiLon">
+				<input type="text" class="form-control" name="poiLon" id="poiLonID">
 			</div>
 			<div class="mb-3">
 				<label for="poiDesc" class="form-label">Description </label>
@@ -40,8 +40,10 @@
 		  </form>
 		</div>
 	</div>
+	<div id="hiddenMap"></div>
 	
 	<%- include ("../public/script/uploadImg", {client_id:imgur_id}); %>
+	<%- include ("../public/script/getLocation"); %>
 	<%- include('partials/footer.ejs') %>
 </body>
 </html>

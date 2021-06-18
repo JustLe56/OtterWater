@@ -3,7 +3,7 @@
 <%- include('partials/header.ejs') %>
 <body>
 	<%- include('partials/navbar.ejs') %>
-    <div class="card">
+    <div class="card p-4">
 		<div class="card-body">
 			<% if (typeof alert != "undefined") { %>
 				<div class="alert <%= alertType %>" role="alert">
@@ -19,11 +19,11 @@
 			</div>
 			<div class="mb-3">
 				<label for="poiLat" class="form-label">Latitude </label>
-				<input type="text" class="form-control" name="poiLat">
+				<input type="text" class="form-control" name="poiLat" id="poiLatID">
 			</div>
 			<div class="mb-3">
 				<label for="poiLon" class="form-label">Longitude </label>
-				<input type="text" class="form-control" name="poiLon">
+				<input type="text" class="form-control" name="poiLon" id="poiLonID">
 			</div>
 			<div class="mb-3">
 				<label for="poiDesc" class="form-label">Description </label>
@@ -31,7 +31,7 @@
 			</div>
 			<div class="mb-3">
 				<label for="poiImg" class="form-label">Image </label>
-				<input type="file" id="poiImg">
+				<input type="file" id="poiImg" style="width: 100%">
 			</div>
 			<div class="mb-3">
 				<input type="hidden" name="poiImgURL" id="hiddenURL" class="form-control" value="https://csumb.edu/media/csumb/migrated-content/d2jtc9c99zuy7wcloudfrontnet/nraUmieKSkK8xaErUyBu_csumb-wide-round.png">
@@ -40,9 +40,11 @@
 		  </form>
 		</div>
 	</div>
+	<div id="hiddenMap"></div>
 	
 	<%- include ("../public/script/uploadImg", {client_id:imgur_id}); %>
-	<%- include('partials/footer.ejs') %>
+	<%- include ("../public/script/getLocation"); %>
+	<!-- <%- include('partials/footer.ejs') %> -->
 </body>
 </html>
 

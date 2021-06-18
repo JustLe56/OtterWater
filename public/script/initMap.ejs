@@ -3,25 +3,20 @@ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0v
 crossorigin=""></script>
 <script>
   accessToken = "pk.eyJ1IjoianVzdGxlNTYiLCJhIjoiY2twZXE1a3NoMDFldTJvcXB5MTYxdHliYiJ9.pT4JmkwAniTtAAzlO3Atqw"
-			var mymap = L.map('mapid').setView([36.653827, -121.798320], 15);
+			var mymap = L.map('mapid',{ "tap": false }).setView([36.653827, -121.798320], 15);
 				L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${accessToken}`, {
                     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
                     maxZoom: 18,
                     id: 'mapbox/streets-v11',
                     tileSize: 512,
                     zoomOffset: -1,
-                    accessToken: 'pk.eyJ1IjoianVzdGxlNTYiLCJhIjoiY2twZXE1a3NoMDFldTJvcXB5MTYxdHliYiJ9.pT4JmkwAniTtAAzlO3Atqw'
+                    accessToken: 'pk.eyJ1IjoianVzdGxlNTYiLCJhIjoiY2twZXE1a3NoMDFldTJvcXB5MTYxdHliYiJ9.pT4JmkwAniTtAAzlO3Atqw',
 		        }).addTo(mymap);
-		// var marker = L.marker([36.653827, -121.798320]).addTo(mymap);
-    
-    // let temp = '<%- JSON.stringify(mapData)%>';
-    // marker.bindPopup(temp);
-
-    //loop through data adding markers for each POI entry
-    <% for (var i =0; i < mapData.length;i++) { %>
-      //to get rid of outer quotations from json stringify we used replace, note that this will remove all quotes including ones inside the description text
-      L.marker(['<%- JSON.stringify(mapData[i].lat)%>', '<%- JSON.stringify(mapData[i].lon)%>']).addTo(mymap).bindPopup('<b><%- JSON.stringify(mapData[i].poi_name).replace(/\"/g, "")%></b><br><%- JSON.stringify(mapData[i].poi_desc).replace(/\"/g, "")%> <img src=<%- JSON.stringify(mapData[i].img_link).replace(/\"/g, "")%> width="100" height="100">');
-    <% } %>
+      //loop through data adding markers for each POI entry
+      <% for (var i =0; i < mapData.length;i++) { %>
+        //to get rid of outer quotations from json stringify we used replace, note that this will remove all quotes including ones inside the description text
+        L.marker(['<%- JSON.stringify(mapData[i].lat)%>', '<%- JSON.stringify(mapData[i].lon)%>']).addTo(mymap).bindPopup('<b><%- JSON.stringify(mapData[i].poi_name).replace(/\"/g, "")%></b><br><%- JSON.stringify(mapData[i].poi_desc).replace(/\"/g, "")%> <img src=<%- JSON.stringify(mapData[i].img_link).replace(/\"/g, "")%> width="100" height="100">');
+      <% } %>
 
     
     

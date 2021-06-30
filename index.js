@@ -104,7 +104,17 @@ app.post("/login", async (req,res) =>{
 });
 
 app.get("/admin",isAdmin,async(req,res)=>{
-    res.render("admin",{"title":"Admin"});
+    let sql = `SELECT * FROM otter_poi`;
+
+    let rows = await executeSQL(sql);
+    res.render("admin",{"title":"Admin","data":rows});
+});
+
+app.post("/admin/approve", async function(req, res){
+	let poi_id = req.body.poi_id;
+	let sql = `UPDATE otter_poi SET approved = 1 WHERE poi_id= ${poi_id}`;
+	let rows = await executeSQL(sql);
+	res.redirect(`/admin`);
 });
 
 app.get("/logout", (req,res) => {

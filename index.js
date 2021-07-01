@@ -117,6 +117,15 @@ app.post("/admin/approve", async function(req, res){
 	res.redirect(`/admin`);
 });
 
+app.get("/admin/delete", async function(req, res){
+	let poi_ID = req.query.poi_id;
+    console.log(poi_ID);
+	let sql = `DELETE FROM otter_poi WHERE poi_id = ${poi_ID}`;
+    let rows = await executeSQL(sql);
+
+    res.redirect(`/admin`);
+});
+
 app.get("/logout", (req,res) => {
 	req.session.destroy();
     console.log("logged out")

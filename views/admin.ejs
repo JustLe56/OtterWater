@@ -7,7 +7,7 @@
     <h2> Welcome admin</h2>
 	<div class="row row-cols-1 row-cols-md-3 g-4">
 		<% for (entry of data) {%> 
-			<% if(entry.approved == 0){ %>
+			<% if(entry.approved == 0) {%> 
 				<div class="col">
 					<div class="card ">
 						<img src="<%= entry.img_link %>" class="card-img-top" alt="<%= entry.poi_name %>" >
@@ -19,14 +19,54 @@
 								<!-- <a href="#" class="btn btn-primary">Approve</a> -->
 								<button class="btn btn-primary">Approve</button>
 							</form>
-							
+							<a href ="#" poi_id = "<%= entry.poi_id %>" poi_desc = "<%= entry.poi_desc %>" class="btn btn-danger deletePOI">Delete</a>
 						</div>
 					</div>
 				</div>
 			<% } %>
 		<% } %>
 	</div>
+	<!-- Modal -->
+	<div id="modal-container">
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Delete this POI?</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="tempPOItext"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger deleteButton" data-bs-dismiss="modal">DELETE</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<!-- <%- include('partials/footer.ejs') %> -->
+	<script>
+		var POIIdToDelete;
+		var POITextToDelete;
+		$(".deletePOI").on("click",confirmDelete);
+		$(".deleteButton").on("click",doDelete);
+
+		function confirmDelete(){
+			POIIdToDelete = $(this).attr("poi_id");
+			POITextToDelete = $(this).attr("poi_desc");
+			$("#tempPOItext").html(POITextToDelete);
+
+			$('#exampleModal').modal('toggle');
+
+		}
+		function doDelete(){
+			window.location.href = `/admin/delete?poi_id=${POIIdToDelete}`
+		}
+
+
+	</script>
 </body>
 </html>
 

@@ -133,6 +133,24 @@ app.get("/admin/delete", async function(req, res){
     res.redirect(`/admin`);
 });
 
+app.get("/admin/update", async function(req, res){
+	let poi_ID = req.query.poi_id;
+    console.log(poi_ID);
+	let sql = `SELECT * FROM otter_poi WHERE poi_id = ${poi_ID}`;
+    let rows = await executeSQL(sql);
+
+    res.render("editPoi",{"title":"Update","data":rows});
+});
+
+app.post("/admin/update", async function(req, res){
+	let poi_ID = req.body.poi_id;
+	let sql = `UPDATE otter_poi SET poi_name = ?, lat = ?, lon = ?, poi_desc = ?, img_link = ? WHERE poi_id = ${poi_ID}`;
+	let params = [req.body.poi_name,req.body.lat,req.body.lon,req.body.poi_desc,req.body.img_link]
+	let rows = await executeSQL(sql,params);
+	//res.send(rows);
+	res.redirect(`/admin`);
+});
+
 app.get("/logout", (req,res) => {
 	req.session.destroy();
     console.log("logged out")

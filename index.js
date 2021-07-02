@@ -117,6 +117,13 @@ app.post("/admin/approve", async function(req, res){
 	res.redirect(`/admin`);
 });
 
+app.post("/admin/unapprove", async function(req, res){
+	let poi_id = req.body.poi_id;
+	let sql = `UPDATE otter_poi SET approved = 0 WHERE poi_id= ${poi_id}`;
+	let rows = await executeSQL(sql);
+	res.redirect(`/admin`);
+});
+
 app.get("/admin/delete", async function(req, res){
 	let poi_ID = req.query.poi_id;
     console.log(poi_ID);

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('partials/header.ejs') %>
+<body>
+	<%- include('partials/navbar.ejs') %>
+
+    <form method="POST" action="/admin/update">
+        <h2>POI:</h2>
+		<input type="hidden" name="poi_id" value="<%= data[0].poi_id %>">
+        <input type = "text" name = "poi_name" placeholder="Name" value = "<%= data[0].poi_name %>">
+        <textarea name="poi_desc" rows ="4" cols="50"><%= data[0].poi_desc %></textarea> 
+        <input type = "text" name = "lat" placeholder="Latitude" value = "<%= data[0].lat %>">
+        <input type = "text" name = "lon" placeholder="Longitude" value = "<%= data[0].lon %>">
+        <input type = "text" name = "img_link" placeholder="Image" value = "<%= data[0].img_link %>">
+        <br>
+        <button class="btn btn-primary"> update POI </button>
+    </form>
+	<!-- <%- include('partials/footer.ejs') %> -->
+</body>
+</html>
+
+

@@ -83,17 +83,72 @@ app.post("/login", async (req,res) =>{
 	if (rows.length > 0){
 		hashedpwd = rows[0].password;
 	}
-
+    console.log(rows[0].admin);
     let match = await bcrypt.compare(password,hashedpwd);
-    if(match){
+    if(match && rows[0].admin == true){
 		req.session.authenticated = true;
+        req.session.username = username;
+        req.session.admin = true;
+        req.session.userID = rows[0].user_id;
+        console.log("admin authed");
+		res.redirect("/");
+	} else if (match) {
+        req.session.authenticated = true;
         req.session.username = username;
         req.session.userID = rows[0].user_id;
         console.log("authed");
 		res.redirect("/");
-	} else {
+    }   else {
         res.render("login",{"alertType":"alert-danger","alert":"Incorrect username or password."});
 	}
+});
+
+app.get("/admin",isAdmin,async(req,res)=>{
+    let sql = `SELECT * FROM otter_poi`;
+
+    let rows = await executeSQL(sql);
+    res.render("admin",{"title":"Admin","data":rows});
+});
+
+app.post("/admin/approve", async function(req, res){
+	let poi_id = req.body.poi_id;
+	let sql = `UPDATE otter_poi SET approved = 1 WHERE poi_id= ${poi_id}`;
+	let rows = await executeSQL(sql);
+	res.redirect(`/admin`);
+});
+
+app.post("/admin/unapprove", async function(req, res){
+	let poi_id = req.body.poi_id;
+	let sql = `UPDATE otter_poi SET approved = 0 WHERE poi_id= ${poi_id}`;
+	let rows = await executeSQL(sql);
+	res.redirect(`/admin`);
+});
+
+app.get("/admin/delete", async function(req, res){
+	let poi_ID = req.query.poi_id;
+    console.log(poi_ID);
+	let sql = `DELETE FROM otter_poi WHERE poi_id = ${poi_ID}`;
+    let rows = await executeSQL(sql);
+
+    res.redirect(`/admin`);
+});
+
+app.get("/admin/update", async function(req, res){
+	let poi_ID = req.query.poi_id;
+    console.log(poi_ID);
+	let sql = `SELECT * FROM otter_poi WHERE poi_id = ${poi_ID}`;
+    let rows = await executeSQL(sql);
+
+    res.render("editPoi",{"title":"Update","data":rows});
+});
+
+app.post("/admin/update", async function(req, res){
+	let poi_ID = req.body.poi_id;
+	let sql = `UPDATE otter_poi SET poi_name = ?, lat = ?, lon = ?, poi_desc = ?, img_link = ? WHERE poi_id = ${poi_ID}`;
+	let params = [req.body.poi_name,req.body.lat,req.body.lon,req.body.poi_desc,req.body.img_link]
+	let rows = await executeSQL(sql,params);
+	//res.send(rows);
+	res.redirect(`/admin`);
 });
 
 app.get("/logout", (req,res) => {
@@ -185,6 +240,14 @@ function isAuthed(req, res, next){
     }
 }
 
+function isAdmin(req,res,next){
+    if (!req.session.authenticated && !req.session.admin){
+        res.redirect('/');
+    } else {
+        next();
+    }
+}
+
 //execute SQL commands
 async function executeSQL(sql, params){
     return new Promise (function (resolve, reject) {
@@ -204,8 +267,23 @@ function dbConnection(){
         host: process.env.DB_HOSTNAME,
         user: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE
- 
+        database: process.env.DB_DATABASE,
+        typeCast: function castField( field, useDefaultTypeCasting ) {
+
+            // We only want to cast bit fields that have a single-bit in them. If the field
+            // has more than one bit, then we cannot assume it is supposed to be a Boolean.
+            if ( ( field.type === "BIT" ) && ( field.length === 1 ) ) {
+    
+                var bytes = field.buffer();
+    
+                // A Buffer in Node represents a collection of 8-bit unsigned integers.
+                // Therefore, our single "bit field" comes back as the bits '0000 0001',
+                // which is equivalent to the number 1.
+                return( bytes[ 0 ] === 1 );
+    
+            }
+            return( useDefaultTypeCasting() );
+        }
     }); 
  
     return pool;

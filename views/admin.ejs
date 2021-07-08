@@ -3,7 +3,7 @@
 
 <%- include('partials/header.ejs') %>
 <body>
-	<%- include('partials/navbar.ejs') %>
+	<%- include('partials/navbar.ejs',{"admin":"admin"}) %> 
     <h2> Welcome admin</h2>
 	<div class="row row-cols-1 row-cols-md-3 g-4">
 		<% for (entry of data) {%> 
@@ -16,6 +16,7 @@
 									<input type="hidden" name="poi_id" value="<%= entry.poi_id %>">
 									<h5 class="card-title"> <%= entry.poi_name %> </h5>
 									<p class="card-text"> <%= entry.poi_desc %> </p>
+									<p class="card-text"> Submitted by: <%= entry.username %> </p>
 									<!-- <a href="#" class="btn btn-primary">Approve</a> -->
 									<button class="btn btn-primary">Approve</button>
 								</form>
@@ -24,6 +25,7 @@
 									<input type="hidden" name="poi_id" value="<%= entry.poi_id %>">
 									<h5 class="card-title"> <%= entry.poi_name %> </h5>
 									<p class="card-text"> <%= entry.poi_desc %> </p>
+									<p class="card-text"> Submitted by: <%= entry.username %> </p>
 									<!-- <a href="#" class="btn btn-primary">Approve</a> -->
 									<button class="btn btn-primary">Approved</button>
 								</form>

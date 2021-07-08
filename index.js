@@ -46,7 +46,7 @@ app.get('/', async (req, res) => {
 
 app.get('/home', isAuthed, async (req, res) => {
     let apiData = await getData();
-	res.render("home",{"username":req.session.username,"mapbox_token":process.env.MAPBOX_API_KEY,"apiData":apiData,"title":"Home"});
+	res.render("home",{"username":req.session.username,"mapbox_token":process.env.MAPBOX_API_KEY,"apiData":apiData,"title":"Home","admin":req.session.admin});
 });
 
 app.get('/submit',isAuthed,async(req,res) =>{
@@ -104,7 +104,7 @@ app.post("/login", async (req,res) =>{
 });
 
 app.get("/admin",isAdmin,async(req,res)=>{
-    let sql = `SELECT * FROM otter_poi`;
+    let sql = `SELECT user_id,poi_id,poi_name,lat,lon,poi_desc,approved,img_link,username FROM otter_poi NATURAL JOIN otter_users`;
 
     let rows = await executeSQL(sql);
     res.render("admin",{"title":"Admin","data":rows});

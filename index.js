@@ -95,12 +95,20 @@ app.post("/login", async (req,res) =>{
 	} else if (match) {
         req.session.authenticated = true;
         req.session.username = username;
+        req.session.admin = false;
         req.session.userID = rows[0].user_id;
         console.log("authed");
 		res.redirect("/");
     }   else {
         res.render("login",{"alertType":"alert-danger","alert":"Incorrect username or password."});
 	}
+});
+
+app.get("/submissions",isAuthed,async(req,res)=>{
+    let sql = `SELECT user_id,poi_id,poi_name,lat,lon,poi_desc,approved,img_link,username FROM otter_poi NATURAL JOIN otter_users WHERE user_id= ${req.session.userID}`;
+
+    let rows = await executeSQL(sql);
+    res.render("mysubmissions",{"title":"My Submissions","data":rows});
 });
 
 app.get("/admin",isAdmin,async(req,res)=>{
@@ -241,7 +249,7 @@ function isAuthed(req, res, next){
 }
 
 function isAdmin(req,res,next){
-    if (!req.session.authenticated && !req.session.admin){
+    if (!req.session.admin){
         res.redirect('/');
     } else {
         next();

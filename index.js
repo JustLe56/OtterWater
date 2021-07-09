@@ -46,7 +46,7 @@ app.get('/', async (req, res) => {
 
 app.get('/home', isAuthed, async (req, res) => {
     let apiData = await getData();
-	res.render("home",{"username":req.session.username,"mapbox_token":process.env.MAPBOX_API_KEY,"apiData":apiData,"title":"Home"});
+	res.render("home",{"username":req.session.username,"mapbox_token":process.env.MAPBOX_API_KEY,"apiData":apiData,"title":"Home","admin":req.session.admin});
 });
 
 app.get('/submit',isAuthed,async(req,res) =>{
@@ -68,7 +68,8 @@ app.post('/submit',isAuthed,async(req,res) =>{
     let rows = await executeSQL(sql,params);
     res.render("submit",{"imgur_id":process.env.IMGUR_CLIENT_ID,"title":"Submit","alertType":"alert-success","alert":"POI Submitted"});
 });
-//when login button is clicked
+
+//LOGIN ROUTE
 app.post("/login", async (req,res) =>{
     let username = req.body.username;
 	let password = req.body.password;
@@ -95,6 +96,7 @@ app.post("/login", async (req,res) =>{
 	} else if (match) {
         req.session.authenticated = true;
         req.session.username = username;
+        req.session.admin = false;
         req.session.userID = rows[0].user_id;
         console.log("authed");
 		res.redirect("/");
@@ -103,8 +105,44 @@ app.post("/login", async (req,res) =>{
 	}
 });
 
+//USER ROUTES
+app.get("/submissions",isAuthed,async(req,res)=>{
+    let sql = `SELECT user_id,poi_id,poi_name,lat,lon,poi_desc,approved,img_link,username FROM otter_poi NATURAL JOIN otter_users WHERE user_id= ${req.session.userID}`;
+
+    let rows = await executeSQL(sql);
+    res.render("mysubmissions",{"title":"My Submissions","data":rows});
+});
+
+app.get("/submissions/delete", async function(req, res){
+	let poi_ID = req.query.poi_id;
+    console.log(poi_ID);
+	let sql = `DELETE FROM otter_poi WHERE poi_id = ${poi_ID}`;
+    let rows = await executeSQL(sql);
+
+    res.redirect(`/submissions`);
+});
+
+app.get("/submissions/update", async function(req, res){
+	let poi_ID = req.query.poi_id;
+    console.log(poi_ID);
+	let sql = `SELECT * FROM otter_poi WHERE poi_id = ${poi_ID}`;
+    let rows = await executeSQL(sql);
+
+    res.render("editPoiUser",{"title":"Update","data":rows});
+});
+
+app.post("/submissions/update", async function(req, res){
+	let poi_ID = req.body.poi_id;
+	let sql = `UPDATE otter_poi SET poi_name = ?, lat = ?, lon = ?, poi_desc = ?, img_link = ? WHERE poi_id = ${poi_ID}`;
+	let params = [req.body.poi_name,req.body.lat,req.body.lon,req.body.poi_desc,req.body.img_link]
+	let rows = await executeSQL(sql,params);
+	//res.send(rows);
+	res.redirect(`/submissions`);
+});
+
+//ADMIN ROUTES
 app.get("/admin",isAdmin,async(req,res)=>{
-    let sql = `SELECT * FROM otter_poi`;
+    let sql = `SELECT user_id,poi_id,poi_name,lat,lon,poi_desc,approved,img_link,username FROM otter_poi NATURAL JOIN otter_users`;
 
     let rows = await executeSQL(sql);
     res.render("admin",{"title":"Admin","data":rows});
@@ -241,7 +279,7 @@ function isAuthed(req, res, next){
 }
 
 function isAdmin(req,res,next){
-    if (!req.session.authenticated && !req.session.admin){
+    if (!req.session.admin){
         res.redirect('/');
     } else {
         next();

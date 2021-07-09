@@ -3,8 +3,8 @@
 
 <%- include('partials/header.ejs') %>
 <body>
-	<%- include('partials/navbar.ejs',{"admin":"admin"}) %> 
-    <h2> Welcome admin</h2>
+	<%- include('partials/navbar.ejs') %> 
+    <h2> Welcome user</h2>
 	<div class="row row-cols-1 row-cols-md-3 g-4">
 		<% for (entry of data) {%> 
 				<div class="col">
@@ -12,26 +12,20 @@
 						<img src="<%= entry.img_link %>" class="card-img-top" alt="<%= entry.poi_name %>" >
 						<div class="card-body">
 							<% if(entry.approved == 0) {%> 
-								<form method="POST" action="/admin/approve">
 									<input type="hidden" name="poi_id" value="<%= entry.poi_id %>">
 									<h5 class="card-title"> <%= entry.poi_name %> </h5>
 									<p class="card-text"> <%= entry.poi_desc %> </p>
 									<p class="card-text"> Submitted by: <%= entry.username %> </p>
-									<!-- <a href="#" class="btn btn-primary">Approve</a> -->
-									<button class="btn btn-primary">Approve</button>
-								</form>
+									<p>Status: Awaiting approval</p>
 							<% } else { %>
-								<form method="POST" action="/admin/unapprove">
 									<input type="hidden" name="poi_id" value="<%= entry.poi_id %>">
 									<h5 class="card-title"> <%= entry.poi_name %> </h5>
 									<p class="card-text"> <%= entry.poi_desc %> </p>
 									<p class="card-text"> Submitted by: <%= entry.username %> </p>
-									<!-- <a href="#" class="btn btn-primary">Approve</a> -->
-									<button class="btn btn-primary">Approved</button>
-								</form>
+									<p>Status: Approved!</p>
 							<% }%>
-							<a href ="#" poi_id = "<%= entry.poi_id %>" poi_desc = "<%= entry.poi_desc %>" class="btn btn-danger deletePOI">Delete</a>
-							<a href="/admin/update?poi_id=<%= entry.poi_id %>" class="btn btn-primary">Update</a>
+							<a href ="#" poi_id = "<%= entry.poi_id %>" poi_name = "<%= entry.poi_name %>" poi_desc = "<%= entry.poi_desc %>" class="btn btn-danger deletePOI">Delete</a>
+                            <a href="/submissions/update?poi_id=<%= entry.poi_id %>" class="btn btn-primary">Update</a>
 						</div>
 					</div>
 				</div>
@@ -43,7 +37,11 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Delete this POI?</h5>
+						<h5 class="modal-title" id="exampleModalLabel">Delete this POI?
+							<div id="tempPOItitle"></div>
+						</h5>
+						
+						
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -60,20 +58,23 @@
 	<!-- <%- include('partials/footer.ejs') %> -->
 	<script>
 		var POIIdToDelete;
+		var POITitleToDelete;
 		var POITextToDelete;
 		$(".deletePOI").on("click",confirmDelete);
 		$(".deleteButton").on("click",doDelete);
 
 		function confirmDelete(){
 			POIIdToDelete = $(this).attr("poi_id");
+			POITitleToDelete = $(this).attr("poi_name");
 			POITextToDelete = $(this).attr("poi_desc");
+			$("#tempPOItitle").html(POITitleToDelete);
 			$("#tempPOItext").html(POITextToDelete);
 
 			$('#exampleModal').modal('toggle');
 
 		}
 		function doDelete(){
-			window.location.href = `/admin/delete?poi_id=${POIIdToDelete}`
+			window.location.href = `/submissions/delete?poi_id=${POIIdToDelete}`
 		}
 
 

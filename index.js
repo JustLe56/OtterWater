@@ -111,6 +111,15 @@ app.get("/submissions",isAuthed,async(req,res)=>{
     res.render("mysubmissions",{"title":"My Submissions","data":rows});
 });
 
+app.get("/submissions/delete", async function(req, res){
+	let poi_ID = req.query.poi_id;
+    console.log(poi_ID);
+	let sql = `DELETE FROM otter_poi WHERE poi_id = ${poi_ID}`;
+    let rows = await executeSQL(sql);
+
+    res.redirect(`/submissions`);
+});
+
 app.get("/admin",isAdmin,async(req,res)=>{
     let sql = `SELECT user_id,poi_id,poi_name,lat,lon,poi_desc,approved,img_link,username FROM otter_poi NATURAL JOIN otter_users`;
 

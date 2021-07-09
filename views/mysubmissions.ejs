@@ -26,9 +26,9 @@
 									<!-- <a href="#" class="btn btn-primary">Approve</a> -->
 									<p class="btn btn-primary">Approved</p>
 							<% }%>
-							<!-- <a href ="#" poi_id = "<%= entry.poi_id %>" poi_desc = "<%= entry.poi_desc %>" class="btn btn-danger deletePOI">Delete</a>
+							<a href ="#" poi_id = "<%= entry.poi_id %>" poi_name = "<%= entry.poi_name %>" poi_desc = "<%= entry.poi_desc %>" class="btn btn-danger deletePOI">Delete</a>
 							
-                            <a href="/admin/update?poi_id=<%= entry.poi_id %>" class="btn btn-primary">Update</a> -->
+                            <!-- <a href="/admin/update?poi_id=<%= entry.poi_id %>" class="btn btn-primary">Update</a> -->
 						</div>
 					</div>
 				</div>
@@ -40,7 +40,11 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Delete this POI?</h5>
+						<h5 class="modal-title" id="exampleModalLabel">Delete this POI?
+							<div id="tempPOItitle"></div>
+						</h5>
+						
+						
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -57,20 +61,23 @@
 	<!-- <%- include('partials/footer.ejs') %> -->
 	<script>
 		var POIIdToDelete;
+		var POITitleToDelete;
 		var POITextToDelete;
 		$(".deletePOI").on("click",confirmDelete);
 		$(".deleteButton").on("click",doDelete);
 
 		function confirmDelete(){
 			POIIdToDelete = $(this).attr("poi_id");
+			POITitleToDelete = $(this).attr("poi_name");
 			POITextToDelete = $(this).attr("poi_desc");
+			$("#tempPOItitle").html(POITitleToDelete);
 			$("#tempPOItext").html(POITextToDelete);
 
 			$('#exampleModal').modal('toggle');
 
 		}
 		function doDelete(){
-			window.location.href = `/admin/delete?poi_id=${POIIdToDelete}`
+			window.location.href = `/submissions/delete?poi_id=${POIIdToDelete}`
 		}
 
 

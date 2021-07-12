@@ -37,7 +37,7 @@ app.get("/dbTest", async function(req, res){
 app.get('/', async (req, res) => {
 
 	if (req.session.authenticated){
-        let apiData = await getData();
+        //let apiData = await getData();
 		res.redirect("home");
 	} else {
 		res.render("login",{"alertType":req.session.alertType,"alert":req.session.alert}); //login can dynamically display various alert messages using bootstrap alerts
@@ -45,8 +45,11 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/home', isAuthed, async (req, res) => {
-    let apiData = await getData();
-	res.render("home",{"username":req.session.username,"mapbox_token":process.env.MAPBOX_API_KEY,"apiData":apiData,"title":"Home","admin":req.session.admin});
+    //let apiData = await getData();
+    let sql = `SELECT * FROM otter_poi`;
+
+    let rows = await executeSQL(sql);
+	res.render("home",{"username":req.session.username,"mapbox_token":process.env.MAPBOX_API_KEY,"apiData":rows,"title":"Home","admin":req.session.admin});
 });
 
 app.get('/submit',isAuthed,async(req,res) =>{
@@ -244,17 +247,17 @@ app.get("/api/getAllPOI", async (req,res)=>{
     res.send(rows);
 });
 
-async function getData(){
-    let url = `http://localhost:3000/api/getAllPOI`;
-    let response = await fetch(url);
-    //console.log(response)
-    if(response.ok){
-        let apiData = await response.json();
-        //console.log("data: "+apiData[0].name);
-        return apiData;
-    }
-    return "error";
-}
+// async function getData(){
+//     let url = `http://localhost:3000/api/getAllPOI`;
+//     let response = await fetch(url);
+//     //console.log(response)
+//     if(response.ok){
+//         let apiData = await response.json();
+//         //console.log("data: "+apiData[0].name);
+//         return apiData;
+//     }
+//     return "error";
+// }
 
 //server startup msg
 app.listen(3000, () => {

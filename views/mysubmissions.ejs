@@ -4,8 +4,11 @@
 <%- include('partials/header.ejs') %>
 <body>
 	<%- include('partials/navbar.ejs') %> 
-    <h2> Welcome user</h2>
+    <h2> My submissions</h2>
 	<div class="row row-cols-1 row-cols-md-3 g-4">
+		<% if (locals.data.length == 0) { %>
+			<h4> You currently have no submissions. Go out there and find something to submit!</h4>
+		<% } %>
 		<% for (entry of data) {%> 
 				<div class="col">
 					<div class="card ">

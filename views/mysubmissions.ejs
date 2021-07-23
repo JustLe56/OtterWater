@@ -2,7 +2,7 @@
 <html lang="en">
 
 <%- include('partials/header.ejs') %>
-<body>
+<body class="d-flex flex-column min-vh-100">
 	<%- include('partials/navbar.ejs') %> 
     <h2> My submissions</h2>
 	<div class="row row-cols-1 row-cols-md-3 g-4">
@@ -58,7 +58,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- <%- include('partials/footer.ejs') %> -->
+	<%- include('partials/footer.ejs') %>
 	<script>
 		var POIIdToDelete;
 		var POITitleToDelete;

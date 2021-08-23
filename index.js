@@ -116,7 +116,7 @@ app.get("/submissions",isAuthed,async(req,res)=>{
     res.render("mysubmissions",{"title":"My Submissions","data":rows});
 });
 
-app.get("/submissions/delete", async function(req, res){
+app.get("/submissions/delete",isAuthed, async function(req, res){
 	let poi_ID = req.query.poi_id;
     console.log(poi_ID);
 	let sql = `DELETE FROM otter_poi WHERE poi_id = ${poi_ID}`;
@@ -125,7 +125,7 @@ app.get("/submissions/delete", async function(req, res){
     res.redirect(`/submissions`);
 });
 
-app.get("/submissions/update", async function(req, res){
+app.get("/submissions/update",isAuthed, async function(req, res){
 	let poi_ID = req.query.poi_id;
     console.log(poi_ID);
 	let sql = `SELECT * FROM otter_poi WHERE poi_id = ${poi_ID}`;
@@ -134,7 +134,7 @@ app.get("/submissions/update", async function(req, res){
     res.render("editPoiUser",{"title":"Update","data":rows});
 });
 
-app.post("/submissions/update", async function(req, res){
+app.post("/submissions/update",isAuthed, async function(req, res){
 	let poi_ID = req.body.poi_id;
 	let sql = `UPDATE otter_poi SET poi_name = ?, lat = ?, lon = ?, poi_desc = ?, img_link = ? WHERE poi_id = ${poi_ID}`;
 	let params = [req.body.poi_name,req.body.lat,req.body.lon,req.body.poi_desc,req.body.img_link]
@@ -151,21 +151,21 @@ app.get("/admin",isAdmin,async(req,res)=>{
     res.render("admin",{"title":"Admin","data":rows});
 });
 
-app.post("/admin/approve", async function(req, res){
+app.post("/admin/approve",isAdmin, async function(req, res){
 	let poi_id = req.body.poi_id;
 	let sql = `UPDATE otter_poi SET approved = 1 WHERE poi_id= ${poi_id}`;
 	let rows = await executeSQL(sql);
 	res.redirect(`/admin`);
 });
 
-app.post("/admin/unapprove", async function(req, res){
+app.post("/admin/unapprove",isAdmin, async function(req, res){
 	let poi_id = req.body.poi_id;
 	let sql = `UPDATE otter_poi SET approved = 0 WHERE poi_id= ${poi_id}`;
 	let rows = await executeSQL(sql);
 	res.redirect(`/admin`);
 });
 
-app.get("/admin/delete", async function(req, res){
+app.get("/admin/delete",isAdmin, async function(req, res){
 	let poi_ID = req.query.poi_id;
     console.log(poi_ID);
 	let sql = `DELETE FROM otter_poi WHERE poi_id = ${poi_ID}`;
@@ -174,7 +174,7 @@ app.get("/admin/delete", async function(req, res){
     res.redirect(`/admin`);
 });
 
-app.get("/admin/update", async function(req, res){
+app.get("/admin/update",isAdmin, async function(req, res){
 	let poi_ID = req.query.poi_id;
     console.log(poi_ID);
 	let sql = `SELECT * FROM otter_poi WHERE poi_id = ${poi_ID}`;
@@ -183,7 +183,7 @@ app.get("/admin/update", async function(req, res){
     res.render("editPoi",{"title":"Update","data":rows});
 });
 
-app.post("/admin/update", async function(req, res){
+app.post("/admin/update",isAdmin, async function(req, res){
 	let poi_ID = req.body.poi_id;
 	let sql = `UPDATE otter_poi SET poi_name = ?, lat = ?, lon = ?, poi_desc = ?, img_link = ? WHERE poi_id = ${poi_ID}`;
 	let params = [req.body.poi_name,req.body.lat,req.body.lon,req.body.poi_desc,req.body.img_link]

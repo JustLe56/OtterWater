@@ -5,6 +5,8 @@
     //127.0.0.1 doesn't display images but the image upload goes through
     file.addEventListener("input", ev => {
         console.log("new event");
+        const fileList = ev.target.files;
+        console.log(fileList);
         const formdata = new FormData();
         formdata.append("image",ev.target.files[0])
         fetch("https://api.imgur.com/3/image", {

@@ -3,7 +3,7 @@
     const url = document.getElementById("hiddenURL");
     //dont use localhost images may display but upload does not; occasionally it will completely work
     //127.0.0.1 doesn't display images but the image upload goes through
-    file.addEventListener("change", ev => {
+    file.addEventListener("input", ev => {
         const formdata = new FormData();
         formdata.append("image",ev.target.files[0])
         fetch("https://api.imgur.com/3/image", {

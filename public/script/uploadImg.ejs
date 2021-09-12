@@ -1,23 +1,18 @@
 <script>
-    const file = document.getElementById("poiImg");
-    const url = document.getElementById("hiddenURL");
-    //dont use localhost images may display but upload does not; occasionally it will completely work
-    //127.0.0.1 doesn't display images but the image upload goes through
-    file.addEventListener("change", ev => {
-        console.log("new event");
-        const fileList = ev.target.files;
-        console.log(fileList);
-        const formdata = new FormData();
-        formdata.append("change",ev.target.files[0])
-        fetch("https://api.imgur.com/3/image", {
-            method: "POST",
-            headers: {
-                Authorization: "Client-ID <%= client_id %>" //use env to hide
-            }
-        , body: formdata
-        }).then(data => data.json()).then(data => {
-            console.log(data)
-            url.value=data.data.link
+        const file = document.getElementById("poiImg");
+        const url = document.getElementById("hiddenURL");
+        
+        file.addEventListener("change", ev => {
+            const formdata = new FormData()
+            formdata.append("image", ev.target.files[0])
+            fetch("https://api.imgur.com/3/image/", {
+                method: "post",
+                headers: {
+                    Authorization: "Client-ID <%= client_id %>"
+                },
+                body: formdata
+            }).then(data => data.json()).then(data => {
+                url.value = data.data.link
+            })
         })
-    })
-</script>
+    </script>

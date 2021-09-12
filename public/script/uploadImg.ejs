@@ -8,7 +8,7 @@
         const fileList = ev.target.files;
         console.log(fileList);
         const formdata = new FormData();
-        formdata.append("image",ev.target.files[0])
+        formdata.append("change",ev.target.files[0])
         fetch("https://api.imgur.com/3/image", {
             method: "POST",
             headers: {

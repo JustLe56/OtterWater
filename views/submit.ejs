@@ -14,28 +14,30 @@
 		  <form method="POST" action="/submit">
 			<div class="mb-3">
 			  <label for="poiName" class="form-label">Point of Interest Name</label>
-			  <input type="text" class="form-control" name="poiName" aria-describedby="POINameHelp">
+			  <input type="text" class="form-control" name="poiName" aria-describedby="POINameHelp" required>
 			  <div id="POINameHelp" class="form-text">Give this point of interest a name.</div>
 			</div>
 			<div class="mb-3">
 				<label for="poiLat" class="form-label">Latitude </label>
-				<input type="text" class="form-control" name="poiLat" id="poiLatID">
+				<input type="text" class="form-control" name="poiLat" id="poiLatID" required>
 			</div>
 			<div class="mb-3">
 				<label for="poiLon" class="form-label">Longitude </label>
-				<input type="text" class="form-control" name="poiLon" id="poiLonID">
+				<input type="text" class="form-control" name="poiLon" id="poiLonID" required>
 			</div>
 			<div class="mb-3">
 				<label for="poiDesc" class="form-label">Description </label>
-				<input type="text" class="form-control" name="poiDesc">
+				<input type="text" class="form-control" name="poiDesc" required>
+				<div id="POIDescHelp" class="form-text">Give this point of interest a description.</div>
 			</div>
 			<div class="mb-3">
 				<label for="poiImg" class="form-label">Image </label>
-				<input type="file" id="poiImg">
+				<input type="file" id="poiImg" required>
 			</div>
 			<div class="mb-3">
 				<input type="hidden" name="poiImgURL" id="hiddenURL" class="form-control" value="https://csumb.edu/media/csumb/migrated-content/d2jtc9c99zuy7wcloudfrontnet/nraUmieKSkK8xaErUyBu_csumb-wide-round.png">
 			</div>
+			<div id="uploadMsg" class="form-text" hidden>Uploading image...</div>
 			<button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
 		  </form>
 		</div>

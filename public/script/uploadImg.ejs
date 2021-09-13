@@ -2,7 +2,7 @@
         const file = document.getElementById("poiImg");
         const url = document.getElementById("hiddenURL");
         const submit = document.getElementById("submitButton");
-        
+        const msg = document.getElementById("uploadMsg");
         var uploading = new Event('input');
 
         file.addEventListener("change", ev => {
@@ -18,12 +18,14 @@
             }).then(data => data.json()).then(data => {
                 url.value = data.data.link;
                 console.log(data.data.link);
+                msg.hidden = false;
                 url.dispatchEvent(uploading);
             })
         })
 
         url.addEventListener("input", ev =>{
             submit.disabled = false;
+            msg.hidden = true;
         })
 
         

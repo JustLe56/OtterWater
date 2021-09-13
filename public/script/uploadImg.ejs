@@ -39,7 +39,15 @@
             const { url } = await fetch("/s3url").then(res => res.json());
             console.log(url);
             
-
+            await fetch(url,{
+                method: "PUT",
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: file
+            })
+            const imageUrl = url.split("?")[0];
+            console.log(imageUrl)
         })
 
         

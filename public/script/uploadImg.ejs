@@ -7,6 +7,7 @@
 
         file.addEventListener("change", ev => {
             submit.disabled = true;
+            msg.hidden = false;
             const formdata = new FormData();
             formdata.append("image", ev.target.files[0])
             fetch("https://api.imgur.com/3/image/", {
@@ -18,7 +19,6 @@
             }).then(data => data.json()).then(data => {
                 url.value = data.data.link;
                 console.log(data.data.link);
-                msg.hidden = false;
                 url.dispatchEvent(uploading);
             })
         })

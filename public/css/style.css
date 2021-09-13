@@ -11,6 +11,7 @@ CSS Selectors
 # for id
 . for class
 */
+
 #mapid {   
     height: 85%; 
     width: 100vw;
@@ -29,6 +30,7 @@ CSS Selectors
 body {
     padding: 0;
     margin: 0;
+    overflow-x: hidden;
 }
 html, body, #map {
     height: 100%;

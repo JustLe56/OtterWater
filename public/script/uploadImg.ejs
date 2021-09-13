@@ -1,9 +1,13 @@
 <script>
         const file = document.getElementById("poiImg");
         const url = document.getElementById("hiddenURL");
+        const submit = document.getElementById("submitButton");
         
+        var uploading = new Event('input');
+
         file.addEventListener("change", ev => {
-            const formdata = new FormData()
+            submit.disabled = true;
+            const formdata = new FormData();
             formdata.append("image", ev.target.files[0])
             fetch("https://api.imgur.com/3/image/", {
                 method: "post",
@@ -12,7 +16,15 @@
                 },
                 body: formdata
             }).then(data => data.json()).then(data => {
-                url.value = data.data.link
+                url.value = data.data.link;
+                console.log(data.data.link);
+                url.dispatchEvent(uploading);
             })
         })
+
+        url.addEventListener("input", ev =>{
+            submit.disabled = false;
+        })
+
+        
     </script>

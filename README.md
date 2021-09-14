@@ -85,6 +85,7 @@ Quickly and easily learn more about the California State University Monterey Bay
 * [EJS](https://ejs.co/)
 * [Leaflet.js](https://leafletjs.com/index.html)
 * [Bootstrap](https://getbootstrap.com/)
+* [AWS S3](https://aws.amazon.com/)
 
 
 
@@ -116,7 +117,7 @@ This is an example of how to list things you need to use the software and how to
 
 1. Get a Mapbox API key at https://www.mapbox.com/studio/account/tokens/
 
-2. Get an Imgur client ID at https://apidocs.imgur.com/
+2. Get an AWS S3 bucket
 
 3. Connect a database
 

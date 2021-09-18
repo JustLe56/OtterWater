@@ -1,13 +1,26 @@
-const express = require("express");
-const mysql = require('mysql');
-const fetch = require('node-fetch');
-const session = require("express-session");
-const bcrypt = require("bcrypt");
-const ejs = require('ejs');
+//const express = require("express");
+import express from "express";
+//const mysql = require('mysql');
+import mysql from "mysql";
+//const fetch = require('node-fetch');
+import fetch from "node-fetch";
+//const session = require("express-session");
+import session from "express-session";
+//const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
+//const ejs = require('ejs');
+import ejs from "ejs";
+//const generateUploadURL = require("../s3.js");
+import { generateUploadURL } from "./s3.js";
+
+import dotenv from "dotenv"
+
 const app = express();
 
-require('dotenv').config({ path:  '.env'})
 
+
+//require('dotenv').config({ path:  '.env'})
+dotenv.config({ path:  '.env'})
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -240,6 +253,12 @@ app.post("/signup", async (req, res)=> {
     }
 });
 
+app.get("/s3url", isAuthed, async (req, res) =>{
+    const url = await generateUploadURL();
+    res.send({url});
+})
+
+
 //api routes
 app.get("/api/getAllPOI", async (req,res)=>{
     let sql = "SELECT * FROM otter_poi";
@@ -302,7 +321,8 @@ async function executeSQL(sql, params){
 
 //create database connection
 function dbConnection(){
-    require('dotenv').config({ path:  '.env'}) //if this doesn't get called here as well as above, process.env is undefined
+    //require('dotenv').config({ path:  '.env'}) //if this doesn't get called here as well as above, process.env is undefined
+    dotenv.config({ path:  '.env'})
     const pool  = mysql.createPool({
         
         connectionLimit: 10,

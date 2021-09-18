@@ -1,31 +1,57 @@
 <script>
-        const file = document.getElementById("poiImg");
-        const url = document.getElementById("hiddenURL");
-        const submit = document.getElementById("submitButton");
-        const msg = document.getElementById("uploadMsg");
+        const input = document.querySelector("#poiInput");
+        const hiddenUrl = document.querySelector("#hiddenURL");
+        const submit = document.querySelector("#submitButton");
+        const msg = document.querySelector("#uploadMsg");
+        const form = document.querySelector("#submitForm");
         var uploading = new Event('input');
 
-        file.addEventListener("change", ev => {
-            submit.disabled = true;
-            msg.hidden = false;
-            const formdata = new FormData();
-            formdata.append("image", ev.target.files[0])
-            fetch("https://api.imgur.com/3/image/", {
-                method: "post",
-                headers: {
-                    Authorization: "Client-ID <%= client_id %>"
-                },
-                body: formdata
-            }).then(data => data.json()).then(data => {
-                url.value = data.data.link;
-                console.log(data.data.link);
-                url.dispatchEvent(uploading);
-            })
-        })
+        // file.addEventListener("change", ev => {
+        //     submit.disabled = true;
+        //     msg.hidden = false;
+        //     const formdata = new FormData();
+        //     formdata.append("image", ev.target.files[0])
+        //     fetch("https://api.imgur.com/3/image/", {
+        //         method: "post",
+        //         headers: {
+        //             Authorization: "Client-ID <%= client_id %>"
+        //         },
+        //         body: formdata
+        //     }).then(data => data.json()).then(data => {
+        //         url.value = data.data.link;
+        //         console.log(data.data.link);
+        //         url.dispatchEvent(uploading);
+        //     })
+        // })
 
-        url.addEventListener("input", ev =>{
+        hiddenUrl.addEventListener("input", ev =>{
             submit.disabled = false;
             msg.hidden = true;
+        })
+
+
+        
+
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+            const file = input.files[0];
+
+            const { url } = await fetch("/s3url").then(res => res.json());
+            //console.log(url);
+            
+            await fetch(url,{
+                method: "PUT",
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                body: file
+            })
+
+            const imageUrl = url.split("?")[0];
+            console.log(imageUrl);
+            hiddenUrl.value = imageUrl;
+
+            form.submit();
         })
 
         

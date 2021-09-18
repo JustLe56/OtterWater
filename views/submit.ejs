@@ -11,8 +11,8 @@
 				</div>
 			<% } %>
 		  <h5 class="card-title">Submit a Point of Interest</h5>
-		  <!-- <form method="POST" action="/submit" id="submitForm"> -->
-			<form id="submitForm">
+		  <form method="POST" action="/submit" id="submitForm">
+			<!-- <form id="submitForm"> -->
 			<div class="mb-3">
 			  <label for="poiName" class="form-label">Point of Interest Name</label>
 			  <input type="text" class="form-control" name="poiName" aria-describedby="POINameHelp" required>
@@ -28,7 +28,7 @@
 			</div>
 			<div class="mb-3">
 				<label for="poiDesc" class="form-label">Description </label>
-				<input type="text" class="form-control" name="poiDesc" required>
+				<input type="text" class="form-control" name="poiDesc">
 				<div id="POIDescHelp" class="form-text">Give this point of interest a description.</div>
 			</div>
 			<div class="mb-3">
@@ -38,6 +38,7 @@
 			<div class="mb-3">
 				<input type="hidden" name="poiImgURL" id="hiddenURL" class="form-control" value="https://csumb.edu/media/csumb/migrated-content/d2jtc9c99zuy7wcloudfrontnet/nraUmieKSkK8xaErUyBu_csumb-wide-round.png">
 			</div>
+			
 			<div id="uploadMsg" class="form-text" hidden>Uploading image...</div>
 			<button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
 		  </form>

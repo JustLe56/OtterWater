@@ -1,6 +1,6 @@
 <script>
         const input = document.querySelector("#poiInput");
-        const url = document.querySelector("#hiddenURL");
+        const hiddenUrl = document.querySelector("#hiddenURL");
         const submit = document.querySelector("#submitButton");
         const msg = document.querySelector("#uploadMsg");
         const form = document.querySelector("#submitForm");
@@ -24,7 +24,7 @@
         //     })
         // })
 
-        url.addEventListener("input", ev =>{
+        hiddenUrl.addEventListener("input", ev =>{
             submit.disabled = false;
             msg.hidden = true;
         })
@@ -37,7 +37,7 @@
             const file = input.files[0];
 
             const { url } = await fetch("/s3url").then(res => res.json());
-            console.log(url);
+            //console.log(url);
             
             await fetch(url,{
                 method: "PUT",
@@ -46,8 +46,12 @@
                 },
                 body: file
             })
+
             const imageUrl = url.split("?")[0];
-            console.log(imageUrl)
+            console.log(imageUrl);
+            hiddenUrl.value = imageUrl;
+
+            form.submit();
         })
 
         

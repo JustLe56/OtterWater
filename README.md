@@ -73,7 +73,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![OtterWater Screen Shot](https://i.imgur.com/md3d6jm.png)
+![OtterWater Screen Shot](https://i.imgur.com/subQFRG.png)
 
 Quickly and easily learn more about the California State University Monterey Bay campus and surrounding area!
 

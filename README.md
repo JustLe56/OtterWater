@@ -158,8 +158,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Justin Le  - jule@csumb.edu
-
+Justin Le  
 Project Link: [https://github.com/JustLe56/OtterWater](https://github.com/JustLe56/OtterWater)
 
 
